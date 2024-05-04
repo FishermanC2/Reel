@@ -5,7 +5,7 @@ from helper.singleton import Singleton
 
 class HookDB(metaclass=Singleton):
     def __init__(self):
-        self._conn = sqlite3.connect('db/hooks.db', check_same_thread=False)
+        self._conn = sqlite3.connect('app/db/hooks.db', check_same_thread=False)
         self._cursor = self._conn.cursor()
 
         try:

@@ -1,4 +1,4 @@
-from routes.main import app
+from app.routes.app import app
 
 if __name__ == '__main__':
     app.run()
