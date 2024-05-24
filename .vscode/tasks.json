@@ -1,0 +1,35 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Run Server",
+        "command": "py app/main.py",
+        "type": "shell",
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "presentation": {
+            "reveal": "always",
+            "panel": "new",
+            "focus": true
+        }
+      },
+      {
+        "label": "Run Demo",
+        "command": "py demo/app.py",
+        "type": "shell",
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "presentation": {
+            "reveal": "always",
+            "panel": "new",
+            "focus": true
+        }
+      }
+    ]
+  }

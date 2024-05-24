@@ -20,6 +20,11 @@
             ],
             "jinja": true,
             "autoStartBrowser": false
+        },
+        {
+            "name": "Flask Scenario Demo",
+            "type": "debugpy",
+            "request": "launch"
         }
     ]
 }
