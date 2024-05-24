@@ -1,5 +1,6 @@
 import logging
-from models import db, Hook
+from app import db
+
 
 class HookDB:
     def __init__(self):
