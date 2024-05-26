@@ -4,6 +4,7 @@ from flask import request, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import form, fields, validators
 import flask_login as login
+from flask_login import login_required
 
 
 TEMP_ADMIN_PASSWORD = generate_password_hash("temp")
@@ -20,9 +21,11 @@ class LoginForm(form.Form):
         if not check_password_hash(TEMP_ADMIN_PASSWORD, self.password.data):
             raise validators.ValidationError('Invalid password')
 
+# TODO : fix admin panel and make login simpler
 class MyAdminIndexView(AdminIndexView):
     admin_is_logged_in = False
 
+    @login_required
     @expose('/')
     def index(self):
         if not login.current_user.is_authenticated:
@@ -41,6 +44,7 @@ class MyAdminIndexView(AdminIndexView):
             login.login_user(user)
 
         if login.current_user.is_authenticated:
+            self.admin_is_logged_in = True
             return redirect(url_for('.index'))
         
         self._template_args['form'] = form
@@ -49,4 +53,5 @@ class MyAdminIndexView(AdminIndexView):
     @expose('/logout/')
     def logout_view(self):
         login.logout_user()
+        self.admin_is_logged_in = False
         return redirect(url_for('.index'))

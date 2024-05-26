@@ -25,6 +25,12 @@
             "name": "Flask Scenario Demo",
             "type": "debugpy",
             "request": "launch"
+        },
+        {
+            "name": "Node debug js payloads",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/app/baits/fetch.js"
         }
     ]
 }

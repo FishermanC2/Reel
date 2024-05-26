@@ -74,10 +74,10 @@ def hook():
     return jsonify(access_token=access_token)
 
 
-@app.route('/alive', methods=['GET'])
+@app.route('/alive', methods=['GET', 'POST'])
 def alive():
     app.logger.info(f'Got alive signal')
-    return 'ok', 200
+    return jsonify(message='Hello')
 
 
 @app.route('/command', methods=['POST'])
