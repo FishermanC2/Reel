@@ -10,7 +10,7 @@ from flask_login import login_required
 TEMP_ADMIN_PASSWORD = generate_password_hash("temp")
 
 class HookModelView(ModelView):
-    column_list = ('id', 'last_update')
+    column_list = ('id', 'ip_address', 'user_agent', 'screen_resolution', 'browser_plugins', 'language', 'timezone', 'last_update')
 
 
 class CommandView(ModelView):
@@ -27,9 +27,6 @@ class LoginForm(form.Form):
 
 # TODO : fix admin panel and make login simpler
 class MyAdminIndexView(AdminIndexView):
-    admin_is_logged_in = False
-
-    @login_required
     @expose('/')
     def index(self):
         if not login.current_user.is_authenticated:
@@ -38,10 +35,6 @@ class MyAdminIndexView(AdminIndexView):
     
     @expose('/login/', methods=('GET', 'POST'))
     def login_view(self):
-        # handle user login
-        if self.admin_is_logged_in:
-            return 'One session is allowed', 403
-        
         form = LoginForm(request.form)
         if helpers.validate_form_on_submit(form):
             user = form.get_user()
@@ -57,5 +50,4 @@ class MyAdminIndexView(AdminIndexView):
     @expose('/logout/')
     def logout_view(self):
         login.logout_user()
-        self.admin_is_logged_in = False
         return redirect(url_for('.index'))
