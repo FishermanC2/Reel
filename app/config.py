@@ -1,4 +1,11 @@
+import dotenv
 import os
+
+
+# TODO: change to only using config or only using .env
+dotenv.load_dotenv()
+
+SECRET_KEY = os.environ["FLASK_SECRET_KEY"]
 
 # Flask-Session
 SESSION_PERMANENT = False

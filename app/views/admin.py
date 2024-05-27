@@ -13,6 +13,10 @@ class HookModelView(ModelView):
     column_list = ('id', 'last_update')
 
 
+class CommandView(ModelView):
+    column_list = ('id', 'command')
+    form_columns = ('command',)
+
 class LoginForm(form.Form):
     login = fields.StringField(validators=[validators.InputRequired()])
     password = fields.PasswordField(validators=[validators.InputRequired()])
