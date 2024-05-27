@@ -15,7 +15,7 @@ class HookModelView(ModelView):
 
 class CommandView(ModelView):
     column_list = ('id', 'command')
-    form_columns = ('command',)
+    form_columns = ('id', 'command')
 
 class LoginForm(form.Form):
     login = fields.StringField(validators=[validators.InputRequired()])

