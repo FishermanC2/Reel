@@ -11,3 +11,12 @@
     font-size: 24px; /* Adjust font size */
     margin-left: -30px; /* Adjust margin to move the buttons more to the left */
 }
+
+.btn-glow {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.75);
+}
+.btn-dark {
+    color: white;
+    background-color: #343a40;
+    border-color: #343a40;
+}

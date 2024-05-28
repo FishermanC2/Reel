@@ -55,12 +55,13 @@ class CommandAdminView(ModelView):
 class AttacksView(BaseView):
     @expose('/')
     def index(self):
-        return self.render('admin/attacks_index.html') # /api/templates/admin/attacks_index.html (base admin folder)
+        # /api/templates/admin/attacks_index.html (base admin folder)
+        return self.render('admin/attacks_index.html', modules=Module.module_name_to_display_name) 
 
-    @expose('/command')
+    @expose('/command', methods=['POST'])
     def command_update(self):
-        id = request.args.get('id')
-        module = request.args.get('module')
+        id = request.form.get('id')
+        module = request.form.get('module')
 
         if not id or not module:
             return abort(400)

@@ -28,12 +28,20 @@ class Module(Enum):
     SCREEN_RESOLUTION = 'screen_resolution.js'
     COOKIE_STEALER = 'cookie_stealer.js'
 
-    module_to_db_column = nonmember({
+    module_name_to_db_column = nonmember({
         BROWSER_PLUGINS : 'browser_plugins',
         TIMEZONE : 'timezone',
         LANGUAGE : 'language',
         SCREEN_RESOLUTION : 'screen_resolution'
         # TODO : cookie stealer
+    })
+
+    module_name_to_display_name = nonmember({
+        BROWSER_PLUGINS : 'Browser Plugins',
+        TIMEZONE : 'Timezone',
+        LANGUAGE : 'Language',
+        SCREEN_RESOLUTION : 'Screen Resolution',
+        COOKIE_STEALER : 'Cookie Stealer'
     })
     
     @classmethod
@@ -46,5 +54,9 @@ class Module(Enum):
     
     @classmethod
     def get_module_as_db_column(cls, module_name):
-        return cls.module_to_db_column[module_name]
+        return cls.module_name_to_db_column[module_name]
+    
+    @classmethod
+    def get_module_as_display_name(cls, module_name):
+        return cls.module_name_to_display_name[module_name]
 

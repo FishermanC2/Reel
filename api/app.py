@@ -16,6 +16,13 @@ def create_app():
         app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
     )
 
+    def color_from_index(index):
+        colors = ['#FF847C', '#FCCB8C', '#FFD166', '#A0E7E5', '#7ED6DF', '#B2B1CF']  # Darker pastel colors
+        return colors[index % len(colors)]
+
+    # Register the custom filter with Jinja2
+    app.jinja_env.filters['color_from_index'] = color_from_index
+
     # Register blueprints
     from .home import bp as home_bp
     app.register_blueprint(home_bp)
