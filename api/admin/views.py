@@ -1,58 +1,38 @@
-from flask_admin.contrib.sqla import ModelView
-from flask import abort, json
-from flask import request, redirect, url_for
-from flask_admin import AdminIndexView, BaseView, helpers, expose
-import flask_login as login
-from wtforms import form, fields, validators
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_wtf import FlaskForm
+from flask import abort
+from flask import request, redirect
+from flask_admin import AdminIndexView, BaseView, expose
 from ..armory.parsers import Module
 from ..command.models import Command
 from ..hook.models import Hook
 from ..helper.responses import OK_RESPONSE
-
-TEMP_ADMIN_PASSWORD = generate_password_hash("temp")
-
-class LoginForm(form.Form):
-    login = fields.StringField(validators=[validators.InputRequired()])
-    password = fields.PasswordField(validators=[validators.InputRequired()])
-
-    def validate_login(self):
-        if not check_password_hash(TEMP_ADMIN_PASSWORD, self.password.data):
-            raise validators.ValidationError('Invalid password')
+from ..extensions import auth
+from ..auth import AuthException, AuthModelView
 
 class FishermanIndexView(AdminIndexView):
+    def is_accessible(self):
+        if not auth.authenticate():
+            raise AuthException('Not authenticated.')
+        else:
+            return True
+    
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(auth.challenge())
+    
     @expose('/')
     def index(self):
-        if not login.current_user.is_authenticated:
-            return redirect(url_for('.login_view'))
         return super(FishermanIndexView, self).index()
     
-    @expose('/login/', methods=('GET', 'POST'))
-    def login_view(self):
-        form = LoginForm(request.form)
-        if helpers.validate_form_on_submit(form):
-            user = form.get_user()
-            login.login_user(user)
-
-        if login.current_user.is_authenticated:
-            self.admin_is_logged_in = True
-            return redirect(url_for('.index'))
-        
-        self._template_args['form'] = form
-        return super(FishermanIndexView, self).index()
-    
-    @expose('/logout/')
-    def logout_view(self):
-        login.logout_user()
-        return redirect(url_for('.index'))
-
-class CommandAdminView(ModelView):
-    column_list = ('hook_id', 'command')
-    form_columns = ('hook_id', 'command')
-    column_labels = {'hook_id': 'Hook ID'}
     
 class AttacksView(BaseView):
+    def is_accessible(self):
+        if not auth.authenticate():
+            raise AuthException('Not authenticated.')
+        else:
+            return True
+    
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(auth.challenge())
+    
     @expose('/')
     def index(self):
         # /api/templates/admin/attacks_index.html (base admin folder)
@@ -79,8 +59,12 @@ class AttacksView(BaseView):
         db.session.commit()
         return OK_RESPONSE
         
+class CommandAdminView(AuthModelView):
+    column_list = ('hook_id', 'command')
+    form_columns = ('hook_id', 'command')
+    column_labels = {'hook_id': 'Hook ID'}
 
-class HookAdminView(ModelView):
+class HookAdminView(AuthModelView):
     column_list = ('id', 'ip_address', 'user_agent', 'screen_resolution', 'browser_plugins', 'language', 'timezone', 'last_update')
     column_labels = {
         'id': 'Hook ID',

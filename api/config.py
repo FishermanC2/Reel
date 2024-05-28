@@ -2,7 +2,6 @@ import dotenv
 import os
 
 
-# TODO: change to only using config or only using .env
 dotenv.load_dotenv()
 
 SECRET_KEY = os.environ["FLASK_SECRET_KEY"]
@@ -14,5 +13,9 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 # Flask-Admin
 FLASK_ADMIN_SWATCH = 'slate'
 
+# CORS
 CORS_HEADERS = 'Content-Type'
 
+# Basic Auth
+BASIC_AUTH_USERNAME = os.environ["ADMIN_AUTH_USERNAME"]
+BASIC_AUTH_PASSWORD = os.environ["ADMIN_AUTH_PASSWORD"]

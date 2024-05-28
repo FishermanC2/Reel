@@ -5,10 +5,11 @@ def create_app():
     app.config.from_pyfile("config.py")
 
     # Initialize extensions
-    from .extensions import db, login_manager, cors
+    from .extensions import db, login_manager, cors, auth
     db.init_app(app)
     login_manager.init_app(app)
     cors.init_app(app, supports_credentials=True)
+    auth.init_app(app)
 
     # Set up nginx reverse proxy
     from werkzeug.middleware.proxy_fix import ProxyFix
