@@ -5,9 +5,10 @@ def create_app():
     app.config.from_pyfile("config.py")
 
     # Initialize extensions
-    from .extensions import db, login_manager
+    from .extensions import db, login_manager, cors
     db.init_app(app)
     login_manager.init_app(app)
+    cors.init_app(app, supports_credentials=True)
 
     # Set up nginx reverse proxy
     from werkzeug.middleware.proxy_fix import ProxyFix
@@ -27,13 +28,14 @@ def create_app():
 
     # Setup admin panel
     from flask_admin import Admin as FlaskAdmin
-    from .admin.views import HookAdminView, CommandAdminView
+    from .admin.views import HookAdminView, CommandAdminView, AttacksView
     from .admin.views import FishermanIndexView
     from .hook.models import Hook
     from .command.models import Command
     admin = FlaskAdmin(app, index_view=FishermanIndexView(), name="Fisherman's Boat", template_mode='bootstrap3')
     admin.add_view(HookAdminView(Hook, db.session))
     admin.add_view(CommandAdminView(Command, db.session))
+    admin.add_view(AttacksView(name='Attacks', endpoint='attacks'))
 
     from .admin.models import Admin
     @login_manager.user_loader

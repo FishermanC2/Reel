@@ -1,11 +1,13 @@
-from flask import Blueprint, request, session, jsonify
+from flask import Blueprint, request, session, json
+from flask_cors import cross_origin
 from api.extensions import db
 from .models import Hook
 
 bp = Blueprint('hook', __name__)
 
 
-@bp.route('/', methods=['GET', 'POST'])
+@bp.route('/')
+@cross_origin(supports_credentials=True)
 def hook():
     user_agent = request.headers.get('User-Agent')
     ip_address = request.remote_addr
@@ -29,4 +31,7 @@ def hook():
 
     session['hook_id'] = new_hook.id
 
-    return jsonify({'message': f'Hook created with ID {new_hook.id}'}), 201 # TODO : Change to something else
+    from ..server import app
+    app.logger.info(f'Hook created with ID {new_hook.id}')
+
+    return json.dumps({'success':True}), 201, {'ContentType':'application/json'} 

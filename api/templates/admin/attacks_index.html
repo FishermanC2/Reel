@@ -1,0 +1,31 @@
+{% extends 'admin/master.html' %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/admin/attacks_index.css') }}">
+{% endblock %}
+{% block body %}
+<div class="container mt-5">
+  <h1 class="module-title">Module Control Panel</h1>
+  <div class="row mt-4">
+    <div class="col-md-4 mb-3">
+      <button type="button" class="btn btn-primary btn-lg btn-rectangle btn-block">Browser Plugins</button>
+    </div>
+    <div class="col-md-4 mb-3">
+      <button type="button" class="btn btn-secondary btn-lg btn-rectangle btn-block">Cookie Stealer</button>
+    </div>
+    <div class="col-md-4 mb-3">
+      <button type="button" class="btn btn-success btn-lg btn-rectangle btn-block">Language</button>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-4 mb-3">
+      <button type="button" class="btn btn-danger btn-lg btn-rectangle btn-block">Screen Resolution</button>
+    </div>
+    <div class="col-md-4 mb-3">
+      <button type="button" class="btn btn-warning btn-lg btn-rectangle btn-block">Timezone</button>
+    </div>
+    <div class="col-md-4 mb-3">
+      <button type="button" class="btn btn-info btn-lg btn-rectangle btn-block">Button 6</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

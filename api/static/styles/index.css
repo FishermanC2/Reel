@@ -1,0 +1,40 @@
+.glow {
+    font-size: 48px; /* Increased font size */
+    font-weight: bold; /* Roboto bold */
+    color: #d14f13; /* Initial text color */
+    margin-bottom: 20px; /* Space between text and link */
+    transition: color 0.4s ease-in-out, text-shadow 0.4s ease-in-out;
+    text-shadow: 
+        -1px -1px 0 black,  
+         1px -1px 0 black,
+        -1px  1px 0 black,
+         1px  1px 0 black;
+}
+
+.glow:hover {
+    color: black; /* Text color on hover */
+    text-shadow: 
+        -1px -1px 0 #d14f13,  
+        1px -1px 0 #d14f13,
+        -1px  1px 0 #d14f13,
+        1px  1px 0 #d14f13,
+        0    0   10px #d14f13, 
+         0    0   20px #d14f13, 
+         0    0   30px #d14f13, 
+         0    0   40px #d14f13, 
+         0    0   50px #d14f13;
+}
+
+.link-container {
+    text-align: center;
+}
+
+.link-container a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 1.2em;
+}
+
+.link-container a:hover {
+    text-decoration: underline;
+}

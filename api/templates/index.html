@@ -4,10 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FishermanC2</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/index.css') }}">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Roboto, sans-serif;
+            background-image: url('{{ url_for('static', filename='images/fishermanc2.png') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
 </head>
 <body>
-    <div class="glow">FishermanC2</div>
-    <div class="link-container"><a href="/admin">Admin Page</a></div>
+    <div class="glow" data-text="FishermanC2">FishermanC2</div>
+    <div class="link-container">
+        <a href="/admin">Admin Page</a>
+    </div>
 </body>
 </html>

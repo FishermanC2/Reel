@@ -1,0 +1,13 @@
+.module-title {
+    text-align: center;
+    margin-left: -30px; /* Adjust margin to move the buttons more to the left */
+}
+
+.btn-rectangle {
+    width: 400px; /* Adjust as needed */
+    height: 200px; /* Adjust as needed */
+    padding: 0; /* Remove default padding */
+    border-radius: 0 !important; /* Remove default border radius */
+    font-size: 24px; /* Adjust font size */
+    margin-left: -30px; /* Adjust margin to move the buttons more to the left */
+}
