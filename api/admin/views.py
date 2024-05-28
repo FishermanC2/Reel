@@ -1,7 +1,5 @@
 from flask_admin.contrib.sqla import ModelView
 from flask import abort, json
-from wtforms import SelectField
-from wtforms.validators import InputRequired
 from flask import request, redirect, url_for
 from flask_admin import AdminIndexView, BaseView, helpers, expose
 import flask_login as login
@@ -11,6 +9,7 @@ from flask_wtf import FlaskForm
 from ..armory.parsers import Module
 from ..command.models import Command
 from ..hook.models import Hook
+from ..helper.responses import OK_RESPONSE
 
 TEMP_ADMIN_PASSWORD = generate_password_hash("temp")
 
@@ -77,10 +76,19 @@ class AttacksView(BaseView):
         from ..extensions import db
         db.session.add(new_command)
         db.session.commit()
-        return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+        return OK_RESPONSE
         
 
 class HookAdminView(ModelView):
     column_list = ('id', 'ip_address', 'user_agent', 'screen_resolution', 'browser_plugins', 'language', 'timezone', 'last_update')
-    column_labels = {'id': 'Hook ID'}
+    column_labels = {
+        'id': 'Hook ID',
+        'ip_address' : 'IP Address',
+        'user_agent' : 'User Agent',
+        'screen_resolution' : 'Screen Resolution',
+        'browser_plugins' : 'Browser Plugins',
+        'language' : 'Language',
+        'timezone' : 'Timezone',
+        'last_update' : 'Last Update'
+    }
     
