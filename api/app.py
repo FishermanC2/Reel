@@ -5,9 +5,8 @@ def create_app():
     app.config.from_pyfile("config.py")
 
     # Initialize extensions
-    from .extensions import db, login_manager, cors, auth
+    from .extensions import db, cors, auth
     db.init_app(app)
-    login_manager.init_app(app)
     cors.init_app(app, supports_credentials=True)
     auth.init_app(app)
 
@@ -44,11 +43,6 @@ def create_app():
     admin.add_view(HookAdminView(Hook, db.session))
     admin.add_view(CommandAdminView(Command, db.session))
     admin.add_view(AttacksView(name='Attacks', endpoint='attacks'))
-
-    from .admin.models import Admin
-    @login_manager.user_loader
-    def load_user(user_id):
-        return db.session.query(Admin).get(user_id)
     
     with app.app_context():
         db.create_all()

