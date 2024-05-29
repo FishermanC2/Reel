@@ -1,5 +1,9 @@
 {% extends 'admin/master.html' %}
-
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/admin/index.css') }}">
+{% endblock %}
 {% block body %}
-    <h2>Entering bad waters...</h2>
+<div class="fisherman-title">
+    <p>Entering bad waters...</p>
+</div>
 {% endblock %}
