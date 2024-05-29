@@ -12,16 +12,6 @@ def hook():
     user_agent = request.headers.get('User-Agent')
     ip_address = request.remote_addr
 
-    # Get additional fingerprinting data from the request JSON body
-    # TODO : move to seperate modules
-    """
-    data = request.json
-    screen_resolution = data.get('screen_resolution')
-    timezone = data.get('timezone')
-    language = data.get('language')
-    browser_plugins = data.get('browser_plugins')
-    """
-
     new_hook = Hook(
         user_agent=user_agent,
         ip_address=ip_address

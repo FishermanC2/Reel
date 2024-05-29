@@ -83,14 +83,14 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
     const sessionStartStatus = await startSession(serverAddress);
 
     if (!sessionStartStatus) {
-        throw new Error("Stopping execution due to connection problems... "); // TODO: Think if to clean up script from page
+        throw new Error("Stopping execution due to connection problems... ");
     }
 
     const intervalId = setInterval(() => { 
         const status = sendRequest(serverAddress);
         if (!status) {
             clearInterval(intervalId);
-            throw new Error("Stopping execution due to connection problems... "); // TODO: Think if to clean up script from page
+            throw new Error("Stopping execution due to connection problems... ");
         }
 
     }, 2000);
