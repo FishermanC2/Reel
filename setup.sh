@@ -9,3 +9,4 @@ read -s -p "Enter admin password: " password
 
 echo "ADMIN_AUTH_USERNAME=${username}" >> api/.env
 echo "ADMIN_AUTH_PASSWORD=${password}" >> api/.env
+echo "ADMIN_WEBSOCKET_TICKET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)" > api/.env

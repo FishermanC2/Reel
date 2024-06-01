@@ -1,16 +1,43 @@
 {% extends 'admin/master.html' %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/admin/index.css') }}">
+<style>
+    .console {
+        background-color: black;
+        color: green;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 20px;
+        padding: 10px;
+        height: 500px;
+        overflow-y: scroll;
+        border: 1px solid #333;
+        text-align: left;
+    }
+</style>
 {% endblock %}
 {% block body %}
 <div class="fisherman-title">
     <p>Entering bad waters...</p>
+    <div class="console" id="console"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='scripts/console_display.js') }}">
-        var socket = io();
+    <script type="text/javascript" charset="utf-8">
+        var socket = io.connect('http://127.0.0.1:5000');
+        var consoleDiv = document.getElementById('console');
+
         socket.on('connect', function() {
-            socket.emit('my event', {data: 'I\'m connected!'});
+            console.log('connected');
         });
+
+        socket.on('message', function(msg) {
+            var message = document.createElement('div');
+            message.textContent = msg;
+            console.log(msg)
+            consoleDiv.appendChild(message);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        });
+
+        // Optional: Send a message to the server periodically
+        setInterval(() => socket.send(), 50);
     </script>
 </div>
 {% endblock %}

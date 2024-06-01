@@ -13,7 +13,6 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                           'favicon.ico',mimetype='image/vnd.microsoft.icon')
 
-
 @bp.route('/alive', methods=['GET', 'POST'])
 def alive():
     from api.server import app

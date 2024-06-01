@@ -34,6 +34,9 @@ def create_app():
     from .command import bp as command_bp
     app.register_blueprint(command_bp, name='command_bp', url_prefix='/command')
 
+    from .admin import bp as admin_console_bp
+    app.register_blueprint(admin_console_bp, name='admin_console_bp', url_prefix='/admin')
+
     # Setup admin panel
     from flask_admin import Admin as FlaskAdmin
     from .admin.views import HookAdminView, CommandAdminView, AttacksView

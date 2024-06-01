@@ -20,8 +20,7 @@ class FishermanIndexView(AdminIndexView):
     
     @expose('/')
     def index(self):
-        return super(FishermanIndexView, self).index()
-    
+        return super(FishermanIndexView, self).index() 
     
 class AttacksView(BaseView):
     def is_accessible(self):
