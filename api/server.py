@@ -1,7 +1,14 @@
+import threading
 from .app import create_app
+from .db.db_ops import run_periodic_db_refresh
 
-app = create_app()
+app, socketio = create_app()
+
+refresh_interval = 600  # 10 minutes in seconds
+db_refresh_thread = threading.Thread(target=run_periodic_db_refresh, args=(app, refresh_interval))
+db_refresh_thread.daemon = True  # This makes the thread exit when the main program exits
+db_refresh_thread.start()
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000)
+    socketio.run(app, host='127.0.0.1', port=5000)
     

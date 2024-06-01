@@ -3,8 +3,6 @@ import base64
 import pathlib
 
 MODULES_PATH = "modules"
-INFO_GATHERING_PREFIX = "info_gathering"
-
 BAITS_PATH = "baits"
 
 # Config consts
@@ -38,12 +36,23 @@ class Bait(Enum):
 
 
 class Module(Enum):
-    BROWSER_PLUGINS = f'{INFO_GATHERING_PREFIX}\\browser_plugins.js'
-    TIMEZONE = f'{INFO_GATHERING_PREFIX}\\timezone.js'
-    LANGUAGE = f'{INFO_GATHERING_PREFIX}\\language.js'
-    SCREEN_RESOLUTION = f'{INFO_GATHERING_PREFIX}\\screen_resolution.js'
-    COOKIE_STEALER = f'{INFO_GATHERING_PREFIX}\\cookie_stealer.js'
-    OS = f'{INFO_GATHERING_PREFIX}\\os.js'
+    BROWSER_PLUGINS = 'browser_plugins.js'
+    TIMEZONE = 'timezone.js'
+    LANGUAGE = 'language.js'
+    SCREEN_RESOLUTION = 'screen_resolution.js'
+    COOKIE_STEALER = 'cookie_stealer.js'
+    OS = 'os.js'
+
+    INFO_GATHERING_SUBCATEGORY = nonmember("info_gathering")
+
+    module_to_sub_category = nonmember({
+        BROWSER_PLUGINS : INFO_GATHERING_SUBCATEGORY,
+        TIMEZONE : INFO_GATHERING_SUBCATEGORY,
+        LANGUAGE : INFO_GATHERING_SUBCATEGORY,
+        SCREEN_RESOLUTION : INFO_GATHERING_SUBCATEGORY,
+        COOKIE_STEALER : INFO_GATHERING_SUBCATEGORY,
+        OS : INFO_GATHERING_SUBCATEGORY
+    })
 
     module_name_to_db_column = nonmember({
         BROWSER_PLUGINS : 'browser_plugins',
@@ -69,7 +78,8 @@ class Module(Enum):
     
     @classmethod
     def b64_encode(cls, module_value: str):
-        return Parser.b64_encode(f"{pathlib.Path(__file__).parent.resolve()}\\{MODULES_PATH}\\{module_value}")
+        sub_category = cls.module_to_sub_category[module_value]
+        return Parser.b64_encode(f"{pathlib.Path(__file__).parent.resolve()}\\{MODULES_PATH}\\{sub_category}\\{module_value}")
     
     @classmethod
     def get_module_as_db_column(cls, module_name):
