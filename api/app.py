@@ -9,7 +9,7 @@ def create_app():
     db.init_app(app)
     cors.init_app(app, supports_credentials=True)
     auth.init_app(app)
-    socketio.init_app(app)
+    socketio.init_app(app, cors_allowed_origins='*')
 
     # Set up nginx reverse proxy
     from werkzeug.middleware.proxy_fix import ProxyFix

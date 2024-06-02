@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# OpenSSL key and cert creation
+openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+
 # Flask setup
 echo "FLASK_SECRET_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)" > api/.env
 
@@ -9,4 +12,3 @@ read -s -p "Enter admin password: " password
 
 echo "ADMIN_AUTH_USERNAME=${username}" >> api/.env
 echo "ADMIN_AUTH_PASSWORD=${password}" >> api/.env
-echo "ADMIN_WEBSOCKET_TICKET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)" > api/.env

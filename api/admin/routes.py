@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask_socketio import send, emit
+from flask_cors import cross_origin
 from ..extensions import socketio, output_buffer, auth
 
 bp = Blueprint('console', __name__)
