@@ -1,7 +1,7 @@
-// module_control.js
 document.addEventListener('DOMContentLoaded', (event) => {
   let selectedButton = null;
 
+  // make button glow after click
   document.querySelectorAll('.module-button').forEach(button => {
       button.addEventListener('click', () => {
           if (selectedButton) {
@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       });
   });
 
+  // submit the hook id form along with the selected module from the button
   document.getElementById('hook-form').addEventListener('submit', function(event) {
       event.preventDefault();
       if (selectedButton) {

@@ -17,8 +17,9 @@ def create_app():
         app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
     )
 
+    # Callback for button coloring
     def color_from_index(index):
-        colors = ['#FF847C', '#FCCB8C', '#FFD166', '#A0E7E5', '#7ED6DF', '#B2B1CF']  # Darker pastel colors
+        colors = ['#FF847C', '#FCCB8C', '#FFD166', '#A0E7E5', '#7ED6DF', '#B2B1CF']
         return colors[index % len(colors)]
 
     # Register the custom filter with Jinja2
@@ -37,7 +38,7 @@ def create_app():
     from .admin import bp as admin_console_bp
     app.register_blueprint(admin_console_bp, name='admin_console_bp', url_prefix='/admin')
 
-    # Setup admin panel
+    # Setup admin panel by adding views
     from flask_admin import Admin as FlaskAdmin
     from .admin.views import HookAdminView, CommandAdminView, AttacksView
     from .admin.views import FishermanIndexView

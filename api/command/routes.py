@@ -11,6 +11,9 @@ bp = Blueprint('command', __name__)
 @bp.route('/')
 @cross_origin(supports_credentials=True, origins='*')
 def bait():
+    """
+    Route for the hooked browser to fetch command from
+    """
     from api.server import app
     hook_id = session.get('hook_id')
     if not hook_id:
@@ -38,6 +41,10 @@ def bait():
 @bp.route('/result_listener', methods=['POST'])
 @cross_origin(supports_credentials=True, origins='*')
 def result_listener():
+    """
+    This route listenes for callback from the bait after it finishes executing the module
+    It parses the information and sends it to the db
+    """
     hook_id = session.get('hook_id')
     if not hook_id:
         abort(403)

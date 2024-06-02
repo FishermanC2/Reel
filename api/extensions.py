@@ -4,6 +4,7 @@ from flask_basicauth import BasicAuth
 from flask_socketio import SocketIO
 from io import StringIO
 
+# Flask extensions
 db = SQLAlchemy()
 cors = CORS()
 auth = BasicAuth()

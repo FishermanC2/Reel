@@ -2,6 +2,9 @@ from datetime import datetime
 from api.extensions import db
 
 class Hook(db.Model):
+    """
+    Represents an handle to a browser (sql alchemy model)
+    """
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     last_update = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     user_agent = db.Column(db.String(255))

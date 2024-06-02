@@ -9,6 +9,13 @@ bp = Blueprint('hook', __name__)
 @bp.route('/')
 @cross_origin(supports_credentials=True, origins='*')
 def hook():
+    """
+    The first route a browser gets to
+    Creates the handle to the browser in the db
+    Makes the browser callback to the /command route
+    """
+
+    # Pick up info we can get straight from the request without modules
     user_agent = request.headers.get('User-Agent')
     ip_address = request.remote_addr
 
