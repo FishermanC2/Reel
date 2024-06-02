@@ -1,5 +1,4 @@
 import threading
-from io import StringIO
 import sys
 from .app import create_app
 from .db.db_ops import run_periodic_db_refresh
@@ -14,7 +13,7 @@ db_refresh_thread.start()
 
 # Redirect output to buffer which is shown in the admin panel
 sys.stdout = output_buffer
-#sys.stderr = output_buffer
+#sys.stderr = output_buffer # Comment this to get debug in console
 
 if __name__ == '__main__':
     socketio.run(app, host='127.0.0.1', port=5000)

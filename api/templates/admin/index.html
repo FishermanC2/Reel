@@ -21,7 +21,11 @@
     <div class="console" id="console"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8">
-        var socket = io.connect('http://127.0.0.1:5000');
+        const socket = io('http://127.0.0.1:5000', {
+            extraHeaders: {
+                Authorization: 'Basic ' + btoa('{{username}}:{{password}}')
+            }
+        });
         var consoleDiv = document.getElementById('console');
 
         socket.on('connect', function() {

@@ -6,6 +6,9 @@ bp = Blueprint('console', __name__)
 
 @socketio.on('connect')
 def test_connect():
+    if not auth.authenticate():
+        return
+    
     emit('connected', {'data': 'Connected'})
 
 @socketio.on('disconnect')

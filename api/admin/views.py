@@ -1,6 +1,7 @@
 from flask import abort
 from flask import request, redirect
 from flask_admin import AdminIndexView, BaseView, expose
+import os
 from ..armory.parsers import Module
 from ..command.models import Command
 from ..hook.models import Hook
@@ -20,7 +21,7 @@ class FishermanIndexView(AdminIndexView):
     
     @expose('/')
     def index(self):
-        return super(FishermanIndexView, self).index() 
+        return self.render('admin/index.html', username=os.environ['ADMIN_AUTH_USERNAME'], password=os.environ['ADMIN_AUTH_PASSWORD'])
     
 class AttacksView(BaseView):
     def is_accessible(self):
