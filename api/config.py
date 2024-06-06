@@ -7,7 +7,7 @@ dotenv.load_dotenv()
 SECRET_KEY = os.environ["FLASK_SECRET_KEY"]
 
 # Flask-Sqlalchemy
-SQLALCHEMY_DATABASE_URI = 'sqlite:///D:\\Reel\\api\\db\\hooks.db'
+SQLALCHEMY_DATABASE_URI = os.environ["SQLALCHEMY_DATABASE_URI"]
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Flask-Admin

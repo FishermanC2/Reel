@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 import time
+import os
 from ..hook.models import Hook
 
 # After this threshold, an hook is considered 'old' and is removed
@@ -11,7 +12,7 @@ def run_periodic_db_refresh(app, interval):
     """
     Create a scoped session to connect to the db (required for threads)
     """
-    engine = create_engine('sqlite:///D:\\Reel\\api\\db\\hooks.db', echo=True)
+    engine = create_engine(os.environ['SQLALCHEMY_DATABASE_URI'], echo=True)
     session_factory = sessionmaker(bind=engine)
     db_session = scoped_session(session_factory)
     while True:
