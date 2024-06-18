@@ -20,6 +20,7 @@ def get_payload():
     """
     if '-h' in sys.argv or '--help' in sys.argv:
         help(get_payload)
+        exit()
     
     key = ''
     value = ''
