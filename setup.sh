@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # OpenSSL key and cert creation
-openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+openssl req -x509 -newkey rsa:4096 -nodes -out conf/cert/cert.pem -keyout conf/cert/key.pem -days 365
 
 # Download python requirements
 python -m pip install -r requirements.txt
